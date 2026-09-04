@@ -1,0 +1,10 @@
+reviewer,originality,quality,clarity,decision
+Alice,4,5,4,accept
+Bob,3,4,3,reject
+Charlie,5,5,4,accept
+David,,3,4,reject
+Eve,4,4,5,accept
+Frank,2,3,2,reject
+Alice,4,5,4,accept
+George,50,4,3,accept
+Harry,3,,4,reject
