@@ -1,0 +1,147 @@
+
+======================================================================
+1. LOADING THE DATASET
+======================================================================
+Shape (rows, columns): (569, 32)
+
+First 5 rows:
+   mean radius  mean texture  mean perimeter  mean area  ...  worst symmetry  worst fractal dimension  target  \
+0        17.99         10.38          122.80     1001.0  ...          0.4601                  0.11890       0   
+1        20.57         17.77          132.90     1326.0  ...          0.2750                  0.08902       0   
+2        19.69         21.25          130.00     1203.0  ...          0.3613                  0.08758       0   
+3        11.42         20.38           77.58      386.1  ...          0.6638                  0.17300       0   
+4        20.29         14.34          135.10     1297.0  ...          0.2364                  0.07678       0   
+
+   diagnosis  
+0  Malignant  
+1  Malignant  
+2  Malignant  
+3  Malignant  
+4  Malignant  
+
+[5 rows x 32 columns]
+
+======================================================================
+2. EXPLORATORY DATA ANALYSIS
+======================================================================
+Missing values: 0
+Duplicate rows: 0
+
+Class distribution:
+diagnosis
+Benign       357
+Malignant    212
+Name: count, dtype: int64
+
+Statistical summary (first 6 features):
+       mean radius  mean texture  mean perimeter  mean area  mean smoothness  mean compactness
+count      569.000       569.000         569.000    569.000          569.000           569.000
+mean        14.127        19.290          91.969    654.889            0.096             0.104
+std          3.524         4.301          24.299    351.914            0.014             0.053
+min          6.981         9.710          43.790    143.500            0.053             0.019
+25%         11.700        16.170          75.170    420.300            0.086             0.065
+50%         13.370        18.840          86.240    551.100            0.096             0.093
+75%         15.780        21.800         104.100    782.700            0.105             0.130
+max         28.110        39.280         188.500   2501.000            0.163             0.345
+
+Top 5 features most correlated with diagnosis (negative = malignant):
+worst concave points   -0.794
+worst perimeter        -0.783
+mean concave points    -0.777
+worst radius           -0.776
+mean perimeter         -0.743
+dtype: float64
+
+======================================================================
+3. DATA PREPROCESSING
+======================================================================
+Train size: (455, 30) | Test size: (114, 30)
+Features standardised (mean=0, std=1).
+
+======================================================================
+4. FEATURE SELECTION
+======================================================================
+Top 10 features by ANOVA F-score:
+worst concave points    795.22
+worst perimeter         719.60
+mean concave points     703.36
+worst radius            687.43
+mean perimeter          565.49
+worst area              541.71
+mean radius             523.61
+mean area               469.52
+mean concavity          416.37
+worst concavity         365.75
+dtype: float64
+
+Top 10 features by Random Forest importance:
+worst perimeter         0.1373
+worst area              0.1373
+worst concave points    0.1155
+mean concave points     0.0918
+worst radius            0.0841
+mean radius             0.0627
+mean perimeter          0.0497
+mean concavity          0.0441
+mean area               0.0405
+worst concavity         0.0348
+dtype: float64
+
+======================================================================
+5. PRINCIPAL COMPONENT ANALYSIS (PCA)
+======================================================================
+PC1 explains 44.27% variance
+PC2 explains 18.97% variance
+Components needed for 95% variance: 10 (out of 30)
+
+======================================================================
+6. CLASSIFICATION MODELS
+======================================================================
+                     Accuracy  Precision  Recall  F1-Score  ROC-AUC  CV Mean Acc  CV Std
+Model                                                                                   
+Logistic Regression    0.9825     0.9861  0.9861    0.9861   0.9954       0.9780  0.0098
+SVM (RBF)              0.9825     0.9861  0.9861    0.9861   0.9950       0.9670  0.0155
+KNN (k=5)              0.9561     0.9589  0.9722    0.9655   0.9788       0.9604  0.0112
+Random Forest          0.9561     0.9589  0.9722    0.9655   0.9932       0.9626  0.0179
+Naive Bayes            0.9298     0.9444  0.9444    0.9444   0.9868       0.9341  0.0287
+Decision Tree          0.9211     0.9565  0.9167    0.9362   0.9163       0.9231  0.0120
+
+BEST MODEL: Logistic Regression
+
+Classification report:
+              precision    recall  f1-score   support
+
+   Malignant       0.98      0.98      0.98        42
+      Benign       0.99      0.99      0.99        72
+
+    accuracy                           0.98       114
+   macro avg       0.98      0.98      0.98       114
+weighted avg       0.98      0.98      0.98       114
+
+Confusion matrix:
+ [[41  1]
+ [ 1 71]]
+
+Random Forest with only top-10 features: accuracy = 0.9386
+
+======================================================================
+7. CLUSTERING - K-MEANS
+======================================================================
+Silhouette score (k=2): 0.3434
+Adjusted Rand Index vs true labels: 0.6536
+Cluster-vs-diagnosis agreement: 90.51%
+
+Cluster vs actual diagnosis:
+Cluster      0    1
+Actual             
+Benign      18  339
+Malignant  176   36
+
+======================================================================
+8. SUMMARY
+======================================================================
+Best classifier        : Logistic Regression
+Best test accuracy     : 98.25%
+Best ROC-AUC           : 0.9954
+PCA components for 95% : 10 of 30
+All graphs saved in the 'figures/' folder; table in model_comparison.csv
